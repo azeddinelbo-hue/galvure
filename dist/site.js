@@ -48,6 +48,27 @@ filters.forEach(button => button.addEventListener('click', () => {
   });
 }));
 
+const workFilters = document.querySelectorAll('[data-work-filter]');
+const workCards = document.querySelectorAll('.portfolio-grid .portfolio-card');
+workFilters.forEach(button => button.addEventListener('click', () => {
+  workFilters.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  workCards.forEach(card => {
+    const show = button.dataset.workFilter === 'all' || card.dataset.kind === button.dataset.workFilter;
+    card.hidden = !show;
+    if (show && !reduced.matches) {
+      card.getAnimations().forEach(animation => animation.cancel());
+      card.animate([{opacity:.5,transform:'translateY(10px)'},{opacity:1,transform:'none'}], {duration:280,easing:'cubic-bezier(.23,1,.32,1)'});
+    }
+  });
+}));
+
+const projectCanvas = document.querySelector('.project-canvas');
+const projectViews = document.querySelectorAll('[data-project-view]');
+projectViews.forEach(button => button.addEventListener('click', () => {
+  projectViews.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  projectCanvas.dataset.view = button.dataset.projectView;
+}));
+
 const choices = {
   launch: ['01 / Starting presence','Build the essentials.','Give people the identity and key materials they need to recognize and understand you. Add other touchpoints when they answer a clear need.'],
   grow: ['02 / Growing presence','Make it work together.','Connect your materials, digital presence and daily communication in one coherent system that reflects the business you have become.'],
